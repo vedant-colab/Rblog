@@ -1,9 +1,11 @@
 from fastapi import FastAPI
-from dotenv import load_dotenv
+import dotenv
+from routes.auth_routes import auth_router 
 app = FastAPI()
 
-load_dotenv()
+dotenv.load_dotenv(r"C:\Users\VEDANT\fastAPI_Projects\blog\.env")
 
+app.include_router(router=auth_router, prefix="/users", tags=["Users"])
 
 @app.get("/")
 def index():
