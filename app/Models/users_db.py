@@ -1,15 +1,15 @@
-from sqlalchemy import Column,String, Boolean, DateTime, func
-from sqlalchemy.ext.declarative import declarative_base
+from tortoise.models import Model
+from tortoise import fields
 
-Base = declarative_base()
-class User(Base):
-    __tablename__ = "users"
-    
-    userid = Column(String(100), primary_key = True)
-    username = Column(String(100), unique=True, nullable= False)
-    password = Column(String(100), nullable=False)  #hashed passwords
-    email = Column(String(200), unique=True, nullable=False)
-    status = Column(Boolean, default=True)
-    role = Column(String(50), default="user")
-    created_at = Column(DateTime(timezone=True), server_default=func.now())
-    updated_at = Column(DateTime(timezone=True), onupdate=func.now())
+class User(Model):
+    userid = fields.CharField(max_length=100, pk=True)
+    username = fields.CharField(max_length=100)
+    password = fields.CharField(max_length=100)
+    email = fields.CharField(max_length=200, unique=True)
+    status = fields.BooleanField(default=True)
+    role = fields.CharField(max_length=50, default="user")
+    created_at = fields.DatetimeField(auto_now_add=True)
+    updated_at = fields.DatetimeField(auto_now=True)
+
+    class Meta:
+        table = "users"
