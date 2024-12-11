@@ -15,9 +15,7 @@ async def create_user(userid : str, username : str, email : str, password : str)
        
 async def fetch_user(email):
     try:
-        print("Hi")
         user = await User.filter(email=email).first()
-        print("in fetch_user", user)
         return user
     except Exception as e:
         print(f"Error fetching user: {e}")
@@ -30,3 +28,4 @@ async def fetch_all_users():
     except Exception as e:
         print("Error fetching all users...", e)
         return None
+    
