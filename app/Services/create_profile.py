@@ -29,3 +29,11 @@ async def fetch_all_users():
         print("Error fetching all users...", e)
         return None
     
+async def fetch_user_on_userid(userid : str) -> User | None:
+    try:
+        user = await User.filter(userid = userid).first()
+        if user :
+            return user
+    except Exception as e:
+        print(f"Error fetching user on userid {e}")
+        return None

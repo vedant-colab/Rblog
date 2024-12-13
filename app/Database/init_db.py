@@ -11,7 +11,7 @@ db_url: str = os.getenv("DATABASE_URL")
 async def init_db():
     await Tortoise.init(
         db_url=db_url,
-        modules={"models": ["Models.users_db"]}  # Point to the module where models are defined
+        modules={"models": ["Models.users_db", "Models.session", "Models.blogs"]}  # Point to the module where models are defined
     )
     # Generate schema (if needed)
     await Tortoise.generate_schemas()

@@ -39,7 +39,7 @@ async def tokenCreation(request : tokenBody, response : Response):
         ifExist = await fetch_user(request.email)
         if ifExist:
             payload = {"userid": request.userid, "email" : request.email}
-            token = create_access_token(payload=payload)
+            token = await create_access_token(payload=payload)
             response.status_code = status.HTTP_200_OK
             return {"error_code": "0", "data" : token }
         else:
