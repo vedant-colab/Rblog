@@ -7,7 +7,7 @@ TORTOISE_ORM = {
     "connections": {"default": DATABASE_URL},
     "apps": {
         "models": {
-            "models": ["Models.users_db", "Models.session", "aerich.models"],
+            "models": ["Models.users_db", "Models.session", "Models.blogs" ,"aerich.models"],
             "default_connection": "default",
         },
     },
