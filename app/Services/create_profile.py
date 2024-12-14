@@ -1,6 +1,6 @@
 from fastapi import Depends
 from Models.users_db import User
-from tortoise.exceptions import IntegrityError
+from tortoise.exceptions import IntegrityError 
 
 # from Database.db import get_db
 async def create_user(userid : str, username : str, email : str, password : str):
