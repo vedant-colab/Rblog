@@ -1,21 +1,23 @@
-from pydantic import BaseModel
+from pydantic import BaseModel, StringConstraints
 # from Database.db import get_db
-from fastapi import FastAPI, Depends, Response, status
+from fastapi import FastAPI, Depends, Response, status, HTTPException, Header
 from sqlalchemy.ext.asyncio import AsyncSession
 from Models.users_db import User
 from Services.create_profile import create_user, fetch_user
 from core.hashing import Hasher
-from core.create_access_token import create_access_token
+from core.create_access_token import create_access_token, delete_token
+from typing_extensions import Annotated
 class Signup(BaseModel):
-    userid : str
-    username : str
-    email : str 
+    userid : Annotated[str, StringConstraints(strip_whitespace=True, max_length=100)]
+    username : Annotated[str, StringConstraints(strip_whitespace=True, max_length=100)]
+    email : Annotated[str, StringConstraints(strip_whitespace=True, max_length=100)]
     password : str
     
 class tokenBody(BaseModel):
-    userid : str
-    password : str
-    email : str
+    userid : Annotated[str, StringConstraints(strip_whitespace=True, max_length=100)]
+    password : Annotated[str, StringConstraints(strip_whitespace=True, max_length=100)]
+    email : Annotated[str, StringConstraints(strip_whitespace=True, max_length=100)]
+
 
 async def signup(request : Signup,response : Response):
     try:
@@ -47,3 +49,16 @@ async def tokenCreation(request : tokenBody, response : Response):
     except Exception as e:
         response.status_code = status.HTTP_500_INTERNAL_SERVER_ERROR
         return {"error_code": "1", "message": f"Some error occrured: {e}"}
+    
+
+async def logout(token : str = Header(alias="Authorization")):
+    try:
+        if token.startswith("Bearer"):
+            token = token[len("Bearer "):]
+        result = await delete_token(token) 
+        if result:
+            return result 
+        raise HTTPException(status_code=404, detail = "user not found")
+    except Exception as e:
+        return {"Error_code": "1", "error": str(e)}
+        
