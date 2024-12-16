@@ -22,3 +22,15 @@ async def create_access_token(payload : dict, expires_in : timedelta | None = No
         return token
     except Exception as e:
         print(e)
+        
+async def delete_token(token : str):
+    try:
+        session = await Session.filter(token = token).order_by("createdAt").first()
+        if session:
+            session.isActive = False 
+            await session.save()
+            return {"error_code": "0", "data": "User logged out sucessfully"}
+        return {"error_code": "1", "data": "No user found for this id or token"}
+    except Exception as e:
+        print(e)
+        return {"error_code": "2", "error": f"{e}"}
