@@ -19,7 +19,7 @@ async def lifespan(app: FastAPI):
 
 app = FastAPI(lifespan=lifespan)
 
-dotenv.load_dotenv(r"C:\Users\VEDANT\fastAPI_Projects\blog\.env")
+dotenv.load_dotenv()
 
 app.include_router(router=auth_router, prefix="/users", tags=["Users"])
 app.include_router(router=details_router, prefix="/details", tags=["details"])
